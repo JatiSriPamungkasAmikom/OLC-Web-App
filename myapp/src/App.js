@@ -13,7 +13,7 @@ const App = () => {
   const searchRecipes = async (query) => {
     try {
       const response = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
+        `https://api.spoonacular.com/recipes/complexSearch?apiKey=3e8fc529d0e6459e865db60f00564a8b`
       );
       setRecipes(response.data.results);
     } catch (error) {
@@ -31,11 +31,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    // Mengubah warna background body berdasarkan tema
     document.body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#333333';
     document.body.style.color = theme === 'light' ? '#000000' : '#ffffff';
 
-    // Mengembalikan warna asli ketika komponen tidak lagi digunakan
     return () => {
       document.body.style.backgroundColor = '';
       document.body.style.color = '';
@@ -43,8 +41,8 @@ const App = () => {
   }, [theme]);
 
   const buttonStyle = {
-    backgroundColor: theme === 'light' ? '#333333' : '#f4d35e', // Berlawanan dengan backgroundColor
-    color: theme === 'light' ? '#ffffff' : '#000000',           // Berlawanan dengan color
+    backgroundColor: theme === 'light' ? '#333333' : '#f4d35e', 
+    color: theme === 'light' ? '#ffffff' : '#000000',           
     padding: '10px 20px',
     border: 'none',
     borderRadius: '5px',
