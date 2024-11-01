@@ -9,13 +9,14 @@ const App = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [recipes, setRecipes] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [filteredFavorites, setFilteredFavorites] = useState([]);
 
   const searchRecipes = async (query) => {
-    if (!query) return; // Menghindari pemanggilan API dengan query kosong
+    if (!query) return;
 
     try {
       const response = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=7cf1dfe875b744a2b55c6c4668330291`
+        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=364850e51f3244b9854207a6b6d4744f`
       );
       setRecipes(response.data.results);
     } catch (error) {
@@ -23,10 +24,21 @@ const App = () => {
     }
   };
 
+  const searchFavorites = (query) => {
+    if (!query) {
+      setFilteredFavorites(favorites);
+      return;
+    }
+    const results = favorites.filter((fav) =>
+      fav.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredFavorites(results);
+  };
+
   const getListRecipes = async () => {
     try {
       const response = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?&apiKey=7cf1dfe875b744a2b55c6c4668330291`
+        `https://api.spoonacular.com/recipes/complexSearch?&apiKey=364850e51f3244b9854207a6b6d4744f`
       );
       setRecipes(response.data.results);
     } catch (error) {
@@ -36,11 +48,16 @@ const App = () => {
 
   const toggleFavorite = (recipe) => {
     const isFavorite = favorites.some((fav) => fav.id === recipe.id);
-    if (isFavorite) {
-      setFavorites(favorites.filter((fav) => fav.id !== recipe.id));
-    } else {
-      setFavorites([...favorites, recipe]);
-    }
+    const updatedFavorites = isFavorite
+      ? favorites.filter((fav) => fav.id !== recipe.id)
+      : [...favorites, recipe];
+
+    setFavorites(updatedFavorites);
+    setFilteredFavorites(updatedFavorites);
+
+    // Filter out the favorite recipes from the main recipes list
+    const updatedRecipes = recipes.filter((rec) => rec.id !== recipe.id);
+    setRecipes(isFavorite ? [...updatedRecipes, recipe] : updatedRecipes);
   };
 
   useEffect(() => {
@@ -58,8 +75,8 @@ const App = () => {
   }, [theme]);
 
   const buttonStyle = {
-    backgroundColor: theme === 'light' ? '#333333' : '#f4d35e', 
-    color: theme === 'light' ? '#ffffff' : '#000000',           
+    backgroundColor: theme === 'light' ? '#333333' : '#f4d35e',
+    color: theme === 'light' ? '#ffffff' : '#000000',
     padding: '10px 20px',
     border: 'none',
     borderRadius: '5px',
@@ -72,14 +89,15 @@ const App = () => {
     <div className={`App ${theme}`}>
       <button onClick={toggleTheme} style={buttonStyle}>Change Theme</button>
       
-      <SearchBar onSearch={searchRecipes} />
-      
-      <RecipeList recipes={favorites} onToggleFavorite={toggleFavorite} />
       <h1>Favorites</h1>
-      <RecipeList recipes={recipes} onToggleFavorite={toggleFavorite} />
+      <SearchBar onSearch={searchFavorites} />
+      <RecipeList recipes={filteredFavorites} favorites={favorites} onToggleFavorite={toggleFavorite} />
 
+      <h1>All Recipes</h1>
+      <SearchBar onSearch={searchRecipes} />
+      <RecipeList recipes={recipes} favorites={favorites} onToggleFavorite={toggleFavorite} />
     </div>
   );
 };
 
-export default App;
+export default App;
