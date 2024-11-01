@@ -11,6 +11,8 @@ const App = () => {
   const [favorites, setFavorites] = useState([]);
 
   const searchRecipes = async (query) => {
+    if (!query) return; // Menghindari pemanggilan API dengan query kosong
+
     try {
       const response = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=7cf1dfe875b744a2b55c6c4668330291`
@@ -42,6 +44,10 @@ const App = () => {
   };
 
   useEffect(() => {
+    getListRecipes();
+  }, []);
+
+  useEffect(() => {
     document.body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#333333';
     document.body.style.color = theme === 'light' ? '#000000' : '#ffffff';
 
@@ -71,6 +77,7 @@ const App = () => {
       <RecipeList recipes={favorites} onToggleFavorite={toggleFavorite} />
       <h1>Favorites</h1>
       <RecipeList recipes={recipes} onToggleFavorite={toggleFavorite} />
+
     </div>
   );
 };
