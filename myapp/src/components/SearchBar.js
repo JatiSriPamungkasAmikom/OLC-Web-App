@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import "../App.css";
+import "./SearchBar.css"
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
-    onSearch(query);
+  // const handleSearch = () => {
+  //   onSearch(query);
+  // };
+
+  const handleInputChange = (e) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    onSearch(newQuery);
   };
 
   return (
@@ -16,7 +23,7 @@ const SearchBar = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleSearch} >Search</button>
+      <button onClick={handleInputChange}>Search</button>
     </div>
   );
 };

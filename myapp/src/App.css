@@ -139,6 +139,13 @@ body,
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  font-family: 'Nunito';
+}
+
+h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  margin: 10px;
 }
 
 /* Pastikan .App memenuhi 100% dari lebar dan tinggi root */
@@ -153,13 +160,13 @@ body,
 }
 
 .App.dark {
-  background-color: #333;
-  color: #fff;
+  background-color: #12333A;
+  color: #FA6400;
 }
 
 .App.light {
-  background-color: #f4d35e;
-  color: #333;
+  background-color: #FEB300;
+  color: #12333A;
 }
 
 .theme-toggle {
