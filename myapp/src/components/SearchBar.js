@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../App.css";
-import "./SearchBar.css";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -17,9 +16,9 @@ const SearchBar = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="btnStyleSearch">Search</button>
     </div>
   );
 };
 
-export default SearchBar;
+export default SearchBar;
