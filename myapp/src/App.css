@@ -194,9 +194,9 @@ h1 {
 .recipe-item {
   margin: 1em;
   padding: 1em;
-  border: 1px solid #ddd;
-  border-radius: 5px;
   width: 200px;
+  text-align: center;
+  background-color: #fff;
 }
 
 .recipe-item img {
